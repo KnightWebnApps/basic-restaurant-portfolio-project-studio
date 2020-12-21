@@ -23,6 +23,106 @@ export default {
       type: 'productVariant'
     },
     {
+      name: 'options',
+      type: 'array',
+      title: 'Options',
+      of: [
+        {
+          name: 'selectOption',
+          type: 'object',
+          title: 'Item Option',
+          fields: [
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Option Name'
+            },
+            {
+              name: 'isRequired',
+              type: 'boolean',
+              title: 'Required?'
+            },
+            {
+              name: 'variants',
+              type: 'array',
+              title: 'Variants',
+              of: [
+                {
+                  name: 'optionVariant',
+                  title: 'Option Variant',
+                  type: 'object',
+                  fields: [
+                    {
+                      name: 'title',
+                      type: 'string',
+                      title: 'Name'
+                    },
+                    {
+                      name: 'price',
+                      type: 'number',
+                      title: 'Price',
+                      description: 'Leave blank if 0'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: 'checkboxOption',
+          type: 'object',
+          title: 'Item Option',
+          fields: [
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Option Name'
+            },
+            {
+              name: 'isSelected',
+              type: 'boolean',
+              title: 'Selected By Default?'
+            }
+          ]
+        },
+        {
+          name: 'textOption',
+          type: 'object',
+          title: 'Item Option',
+          fields: [
+            {
+              name: 'title',
+              type: 'string',
+              title: 'Name'
+            },
+            {
+              name: 'isRequired',
+              type: 'boolean',
+              title: 'Required?'
+            },
+            {
+              name: 'default',
+              type: 'string',
+              title: 'Default Value'
+            },
+            {
+              name: 'placeholder',
+              type: 'string',
+              title: 'Placeholder',
+              description: 'Helper text that goes inside the form field, before a user types.  *Hidden if default value is given.'
+            }
+          ]
+        },
+        {
+          name: 'readOnlyOption',
+          type: 'string',
+          title: 'Item Option',
+          description: 'Displayed under the item in the cart screen.'
+        }
+      ]
+    },
+    {
       title: 'Variants',
       name: 'variants',
       type: 'array',

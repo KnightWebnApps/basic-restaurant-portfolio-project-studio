@@ -27,10 +27,80 @@ export default createSchema({
     vendor,
     category,
     {
+      name: 'smoothie',
+      title: 'Smoothies',
+      type: 'document',
+      fields: [
+        {
+          name: 'name',
+          title: 'Name',
+          type: 'string'
+        },
+        {
+          name: 'price',
+          title: 'Price',
+          type:  'number'
+        },
+        {
+          name: 'calories',
+          title: 'Calories',
+          type: 'number'
+        },
+        {
+          name: 'description',
+          title: 'Description',
+          type: 'string'
+        },
+        {
+          name: 'mainAsset',
+          type: 'object',
+          title: 'Main Image',
+          fields: [
+            {
+              name: 'image',
+              type: 'image',
+              title: 'Image'
+            },
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternate Text',
+              description: 'Alt text is from SEO and Accessibility purposes'
+            }
+          ]
+        },
+        {
+          name: 'ingredients',
+          title: 'Ingredients',
+          type: 'array',
+          of: [
+            { 
+              name: 'ing',
+              type: 'object',
+              title: 'Ingredient',
+              fields: [
+                {
+                  name: 'name',
+                  type: 'string',
+                  title: 'Name'
+                },
+                {
+                  name: 'asset',
+                  type: 'image',
+                  title: 'Icon',
+                  description: 'Look for flat line design with appropriate colors'
+                }
+              ] 
+            }
+          ]
+        }
+      ]
+    },
+    {
       name: "business",
       title: "Business",
       type: "document",
-      __experimental_actions: ['update', /*'create', 'delete', */ 'publish'],
+      __experimental_actions: ['update', 'create',/* 'delete', */ 'publish'],
       fields: [
         {
           name: 'name',
@@ -41,6 +111,12 @@ export default createSchema({
           name: 'tagline',
           title: 'Tagline',
           type: 'text',
+        },
+        {
+          name: 'bannerMessage',
+          title: 'Banner Message',
+          type: 'string',
+          description: 'Use this to display an alert at the top of your site.  Useful for sudden changes in business.'
         },
         {
           name: 'headerImage',
@@ -59,6 +135,7 @@ export default createSchema({
           name: 'hours',
           type: 'array',
           title: 'Operation Hours',
+          validation: Rule => Rule.length(7),
           of: [
             {
               name: "time",
@@ -85,6 +162,18 @@ export default createSchema({
           ]
         },
         {
+          name: 'phoneNumber',
+          type: 'string',
+          title: 'Phone Number',
+          description: 'No spaces or special characters'
+        },
+        {
+          name: 'menuDescription',
+          type: 'text',
+          title: 'Menu Description',
+          description: 'The description at the top of your menu page'
+        },
+        {
           name: 'address',
           type: 'object',
           title: 'Address',
@@ -107,8 +196,25 @@ export default createSchema({
             {
               name: 'postalCode',
               type: 'string',
-              title: 'Postal Code'
+              title: 'Postal Code',
+              validation: (Rule) =>
+                Rule.custom((postal) => {
+                  if (typeof postal === "undefined") {
+                    return true // Allow undefined values, remove if the field is required
+                  }
+                  const regex = /([ABCEGHJ-NPRSTVXY]\d[A-Z])[\s\-]?(\d[A-Z]\d)/gi // Regex pattern goes here
+                  if (regex.test(postal)) {
+                    return true
+                  } else {
+                    return "Not a valid postal code" // Error message goes here
+                  }
+                }),
             },
+            {
+              name: 'link',
+              type: 'url',
+              title: 'Google Map Share Link'
+            }
           ]
         },
         {
@@ -120,6 +226,35 @@ export default createSchema({
           options: {
             layout: 'tags'
           }
+        },
+        {
+          name: 'socialMedia',
+          type: 'array',
+          title: 'Social Media Links',
+          of: [
+            {
+              name: 'platform',
+              title: 'Platform',
+              type: 'object',
+              fields: [
+                {
+                  name: 'name',
+                  title: 'Platform Name',
+                  type: 'string'
+                },
+                {
+                  name: 'logo',
+                  type: 'image',
+                  title: 'Platform Logo'
+                },
+                {
+                  name: 'link',
+                  title: 'Link Url',
+                  type: 'url'
+                }
+              ]
+            },
+          ]
         },
         {
           name: 'images',
@@ -137,7 +272,6 @@ export default createSchema({
       ],
       initialValue: {
         name: 'Business',
-        tagline: 'we are fresh to death'
       }
     },
     // When added to this list, object types can be used as
